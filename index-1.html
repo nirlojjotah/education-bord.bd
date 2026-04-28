@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web Based Result - Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ========== SHARED VARIABLES ========== */
+    :root {
+      --green: #1e8a47;
+      --light-green: #2fa250;
+      --muted: #f3f3f3;
+      --card-bg: #ffffff;
+      --accent: #5fb3d5;
+      --text: #333;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: #fafafa;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ========== HEADER (shared) ========== */
+    .profile { display: flex; align-items: center; }
+    .profile img { width: 60px; height: 60px; border-radius: 50%; margin-right: 6px; }
+    .site-header {
+      background: var(--green);
+      color: #fff;
+      padding: 18px 12px;
+      max-width: 980px;
+      margin: 10px;
+      border-radius: 10px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; max-width: 980px; margin: 0 auto; }
+    .seal {
+      width: 68px; height: 68px; border-radius: 8px;
+      background: #fff3; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #fff; border: 2px solid rgba(255,255,255,0.07); flex-shrink: 0;
+    }
+    .brand-text h1 {
+      margin: 0;
+      font-family: "Playfair Display", serif;
+      font-size: 20px; line-height: 1.05; letter-spacing: 0.5px; font-weight: 600;
+    }
+    .brand-text .sub { margin: 6px 0 0; font-size: 12px; opacity: 0.95; }
+
+    /* ========== FOOTER / PARAGRAPH (shared) ========== */
+    .paragraph {
+      width: 100%; height: 80px; background: #3b41406a;
+      justify-content: center; font-size: 10px; padding: 5px; border-radius: 7px;
+    }
+    .paragraph p { text-align: center; }
+    .site-footer { text-align: center; padding: 18px 10px; color: #888; font-size: 14px; }
+
+    /* ========== PAGE VISIBILITY ========== */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* =============================================
+       PAGE 1 — SEARCH FORM
+       ============================================= */
+    .container { max-width: 980px; margin: 18px auto; padding: 0 12px 40px; }
+    .card {
+      background: var(--card-bg); border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(22,22,22,0.04);
+      padding: 18px; margin-bottom: 18px; border: 1px solid #eee;
+    }
+    .card-title { font-weight: 600; margin-bottom: 12px; color: #555; font-size: 12px; }
+    .form label { display: block; margin-bottom: 12px; font-size: 15px; color: #444; }
+    .form select,
+    .form input[type="text"],
+    .form input[type="number"],
+    .form input[type="password"],
+    .form input[type="email"] {
+      width: 100%; padding: 12px 14px; margin-top: 6px;
+      border-radius: 6px; border: 1px solid #ddd;
+      background: #fff; font-size: 15px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form select:focus,
+    .form input[type="text"]:focus,
+    .form input[type="number"]:focus,
+    .form input[type="password"]:focus,
+    .form input[type="email"]:focus {
+      border-color: #1e8a47; box-shadow: 0 0 6px #1e8a47; outline: none;
+    }
+    .actions { display: flex; gap: 10px; margin-top: 10px; align-items: center; justify-content: center; }
+    .btn { border: 0; padding: 10px 16px; border-radius: 28px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+    .btn.primary { background: var(--green); color: #fff; }
+    .btn.ghost { background: transparent; color: var(--green); border: 1px solid #dfe; }
+    .btn.small { padding: 8px 12px; border-radius: 20px; font-size: 13px; }
+    .btn.green { background: var(--green); color: #fff; }
+    .btn.blue { background: var(--accent); color: #fff; }
+    .btn:hover { opacity: 0.9; }
+
+    /* =============================================
+       PAGE 2 — RESULT
+       ============================================= */
+    #page-result { font-family: inherit; font-size: inherit; }
+    .page-wrapper { max-width: 860px; width: 100%; margin: 20px auto; background: #fff; padding: 20px; }
+    #page-result h2 { text-align: center; font-size: 20px; font-weight: bold; color: #111; margin-bottom: 16px; }
+    .button-box { display: flex; justify-content: center; margin-bottom: 22px; border-radius: 4px; }
+    .green-btn {
+      background: #2cb35a; color: #fff; border: none; padding: 8px 22px; font-size: 14px; cursor: pointer;
+      border-top-left-radius: 4px; border-bottom-left-radius: 4px;
+    }
+    .blue-btn {
+      background: #5bc8f5; color: #fff; border: none; padding: 8px 20px; font-size: 14px; cursor: pointer;
+      border-top-right-radius: 4px; border-bottom-right-radius: 4px;
+    }
+    .green-btn:hover { background: #28a050; }
+    .blue-btn:hover { background: #3ab8e8; }
+
+    .info-section { margin-bottom: 24px; }
+    .info-header { background: #2cb35a; color: #fff; padding: 10px 14px; font-size: 14px; font-weight: bold; }
+    .info-table { width: 100%; border-collapse: collapse; }
+    .info-table tr { border-bottom: 1px solid #e0e0e0; }
+    .info-table tr:last-child { border-bottom: none; }
+    .info-table tr:nth-child(even) { background: #f7f7f7; }
+    .info-table tr:nth-child(odd) { background: #fff; }
+    .info-table td { padding: 9px 14px; font-size: 13.5px; vertical-align: middle; }
+    .info-table td:nth-child(1) { color: #555; width: 18%; }
+    .info-table td:nth-child(2) { color: #222; width: 32%; }
+    .info-table td:nth-child(3) { color: #555; width: 18%; }
+    .info-table td:nth-child(4) { color: #222; width: 32%; }
+
+    .subject-title { text-align: center; font-size: 16px; font-weight: bold; color: #111; margin-bottom: 8px; }
+    .grades-section { margin-bottom: 24px; }
+    .grades-table { width: 100%; border-collapse: collapse; }
+    .grades-table thead tr { background: #2cb35a; }
+    .grades-table thead th { color: #fff; padding: 10px 14px; font-size: 13.5px; font-weight: bold; text-align: left; }
+    .grades-table tbody tr { border-bottom: 1px solid #e0e0e0; }
+    .grades-table tbody tr:last-child { border-bottom: none; }
+    .grades-table tbody tr:nth-child(even) { background: #f7f7f7; }
+    .grades-table tbody tr:nth-child(odd) { background: #fff; }
+    .grades-table tbody td { padding: 9px 14px; font-size: 13.5px; vertical-align: middle; color: #333; }
+    .grades-table tbody td:nth-child(1) { width: 14%; color: #555; }
+    .grades-table tbody td:nth-child(2) { width: 55%; }
+    .grades-table tbody td:nth-child(3) { width: 15%; }
+    .grades-table tbody td:nth-child(4) { width: 16%; }
+
+    .teal-line { height: 3px; background: #1abc9c; }
+    #page-result .paragraph { max-width: 980px; margin: 0 auto; }
+
+    /* Not found box */
+    .not-found-box {
+      text-align: center; padding: 40px 20px; color: #c0392b;
+      font-size: 16px; font-weight: 600; border: 1px solid #f5c6cb;
+      background: #fff5f5; border-radius: 8px; margin: 20px 0;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page-wrapper { box-shadow: none; margin: 0; }
+      .button-box { display: none; }
+    }
+    @media (max-width: 700px) {
+      .page-wrapper { padding: 15px; }
+      .brand-text h1 { font-size: 16px; }
+      .brand-text .sub { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== SHARED HEADER ===== -->
+  <header class="site-header">
+    <div class="brand">
+      <div class="profile">
+        <img src="288-2882430_embassy-of-bangladesh-logo-of-bangladesh-government-png.png" alt="Profile" id="profileBtn">
+      </div>
+      <div class="brand-text">
+        <h1>WEB BEST RESULT <span>PUBLICATION SYSTEM FOR EDUCATION BOARD</span></h1>
+        <p class="sub">JSC/JDC/SSC/DAKHIIL/HSC/ALIM AND EQUIVALENT EXAMINATION</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- =============================================
+       PAGE 1 — SEARCH FORM
+       ============================================= -->
+  <div id="page-search" class="page active">
+    <br><br><br><br>
+    <main class="container">
+      <section class="card form-card" id="search-section">
+        <div class="card-title">[<span style="color:red;">বাংলায় দেখুন</span>] [ <span style="color:green;">Live Web Access Graph</span>]
+        <br>Please provide the following information to view result</div>
+
+        <form id="searchForm" class="form">
+          <label> Name of Board
+            <select id="selBoard" required>
+              <option value="">Select One</option>
+              <option>Barisal</option><option>Chittagong</option><option>Comilla</option>
+              <option>Dhaka</option><option>Dinajpur</option><option>Jessore</option>
+              <option>Madrasha</option><option>Mymenshingh</option><option>Rajshahi</option>
+              <option>Sylhet</option><option>Technical</option>
+            </select>
+          </label>
+
+          <label> Name of Examination
+            <select id="selExam" required>
+              <option value="">Select One</option>
+              <option>JSC/JDC</option>
+              <option>SSC/Dakhil/Equivalent</option>
+              <option>HSC/Alim/Equivalent</option>
+              <option>DIBS(Diploma in Business Studies)</option>
+            </select>
+          </label>
+
+          <label> Year of Examination
+            <select id="selYear" required>
+              <option value="">Select One</option>
+              <option>2026</option><option>2025</option><option>2024</option>
+              <option>2023</option><option>2022</option><option>2021</option>
+              <option>2020</option><option>2019</option><option>2018</option>
+              <option>2017</option><option>2016</option><option>2015</option>
+              <option>2014</option><option>2013</option><option>2012</option>
+              <option>2011</option><option>2010</option><option>2009</option>
+              <option>2008</option><option>2007</option><option>2006</option>
+              <option>2005</option><option>2004</option><option>2003</option>
+              <option>2002</option><option>2001</option><option>2000</option>
+              <option>1999</option><option>1998</option><option>1997</option>
+              <option>1996</option>
+            </select>
+          </label>
+
+          <label><span style="color:red;">Type of Result</span>
+            <select id="resultType" required>
+              <option value="">Select One</option>
+              <option value="individual">Individual/Detailed Result</option>
+              <option>Institution Result</option>
+              <option>Center Result</option>
+              <option>District Result</option>
+              <option>Institution Analytics</option>
+              <option>Board Analytics</option>
+              <option>Individual/Detailed Re-scrutiny/Others Result</option>
+            </select>
+          </label>
+
+          <!-- Hidden Section for Individual Result -->
+          <div id="individualFields" style="display:none; margin-top:15px;">
+            <label>Roll Number of Examinee
+              <input type="number" id="inputRoll" placeholder="Enter Roll Number" required>
+            </label>
+            <label>Registration Number of Examinee
+              <input type="number" id="inputReg" placeholder="Enter Registration Number" required>
+            </label>
+
+            <!-- CAPTCHA -->
+            <div class="captcha-box">
+              <p><strong><span style="font-size:13px;">Robot Prevention Technique (CAPTCHA)</span></strong></p>
+              <div class="captcha-container">
+                <img id="captchaImage" src="" alt="CAPTCHA" style="width:120px; height:40px; border:1px solid #ccc; border-radius:5px;">
+                <button type="button" id="refreshCaptcha" class="btn ghost" style="margin-left:10px;">↻ Refresh</button>
+              </div>
+              <input type="text" id="captchaInput" maxlength="4" placeholder="Enter 4-digit code" required style="margin-top:8px;">
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn primary">View Result</button>
+            <button type="reset" class="btn ghost">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <br><br><br>
+      <div class="paragraph">
+        <p>This service is hosted on Nixtec Systems Cloud</p>
+        <p>Software Development and Maintenance: Nixtec Systems</p>
+        <p>Result Information Maintenance and Update: Respective Board</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© Education Board - Demo</p>
+    </footer>
+  </div>
+
+  <!-- =============================================
+       PAGE 2 — RESULT
+       ============================================= -->
+  <div id="page-result" class="page">
+    <div class="page-wrapper">
+      <h2 id="resultTitle">Result of HSC or Equivalent Examination - 2025</h2>
+
+      <div class="button-box">
+        <button class="green-btn" id="searchAgainBtn">Search Again</button>
+        <button class="blue-btn" onclick="window.print()">Print</button>
+      </div>
+
+      <!-- Not found message (hidden by default) -->
+      <div id="notFoundBox" class="not-found-box" style="display:none;">
+        ❌ No result found. Please check your Roll and Registration number.
+      </div>
+
+      <!-- Student info (hidden until loaded) -->
+      <div id="resultContent" style="display:none;">
+        <div class="info-section">
+          <div class="info-header">Student Information Summary</div>
+          <table class="info-table">
+            <tr>
+              <td>Roll No</td><td id="r-roll"></td>
+              <td>Registration No</td><td id="r-reg"></td>
+            </tr>
+            <tr>
+              <td>Name of Student</td><td id="r-name"></td>
+              <td></td><td></td>
+            </tr>
+            <tr>
+              <td>Father's Name</td><td id="r-father"></td>
+              <td></td><td></td>
+            </tr>
+            <tr>
+              <td>Mother's Name</td><td id="r-mother"></td>
+              <td></td><td></td>
+            </tr>
+            <tr>
+              <td>Board</td><td id="r-board"></td>
+              <td>Session</td><td id="r-session"></td>
+            </tr>
+            <tr>
+              <td>Group</td><td id="r-group"></td>
+              <td id="r-type-label">Type: REGULAR</td><td id="r-gender"></td>
+            </tr>
+            <tr>
+              <td>Result</td><td id="r-gpa"></td>
+              <td>Date of Birth</td><td id="r-dob"></td>
+            </tr>
+            <tr>
+              <td>Name of Institute</td><td id="r-institute"></td>
+              <td></td><td></td>
+            </tr>
+          </table>
+          <div class="teal-line"></div>
+        </div>
+
+        <div class="subject-title">Subject-wise Grade/Marks</div>
+
+        <div class="grades-section">
+          <table class="grades-table">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th></th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody id="subjectTableBody">
+            </tbody>
+          </table>
+          <div class="teal-line"></div>
+        </div>
+      </div>
+
+      <div class="button-box">
+        <button class="green-btn" id="searchAgainBtn2">Search Again</button>
+        <button class="blue-btn" onclick="window.print()">Print</button>
+      </div>
+    </div>
+
+    <div class="paragraph" style="max-width:860px; margin: 0 auto 10px;">
+      <p>This service is hosted on Nixtec Systems Cloud</p>
+      <p>Software Development and Maintenance: Nixtec Systems</p>
+      <p>Result Information Maintenance and Update: Respective Board</p>
+    </div>
+    <footer class="site-footer">
+      <p>© Education Board - Demo</p>
+    </footer>
+  </div>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    /* ---- SPA navigation ---- */
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    /* ---- Search Again buttons ---- */
+    document.getElementById('searchAgainBtn').addEventListener('click', () => showPage('page-search'));
+    document.getElementById('searchAgainBtn2').addEventListener('click', () => showPage('page-search'));
+
+    /* ---- CAPTCHA ---- */
+    const captchaImage = document.getElementById('captchaImage');
+    const refreshCaptcha = document.getElementById('refreshCaptcha');
+
+    function generateCaptcha() {
+      const code = Math.floor(1000 + Math.random() * 9000).toString();
+      const canvas = document.createElement('canvas');
+      canvas.width = 120; canvas.height = 40;
+      const ctx = canvas.getContext('2d');
+      const gradient = ctx.createLinearGradient(0, 0, 120, 40);
+      gradient.addColorStop(0, '#f0f0f0');
+      gradient.addColorStop(1, '#d6d6d6');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 120, 40);
+      for (let i = 0; i < 40; i++) {
+        ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(Math.random() * 120, Math.random() * 40, 1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      for (let i = 0; i < 5; i++) {
+        ctx.strokeStyle = `rgba(0,0,0,${Math.random() * 0.2})`;
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * 120, Math.random() * 40);
+        ctx.lineTo(Math.random() * 120, Math.random() * 40);
+        ctx.stroke();
+      }
+      ctx.font = 'bold 24px Inter';
+      ctx.fillStyle = '#333';
+      for (let i = 0; i < code.length; i++) {
+        const angle = (Math.random() - 0.5) * 0.3;
+        ctx.save();
+        ctx.translate(20 + i * 20, 28);
+        ctx.rotate(angle);
+        ctx.fillText(code[i], 0, 0);
+        ctx.restore();
+      }
+      captchaImage.src = canvas.toDataURL();
+      captchaImage.dataset.code = code;
+    }
+
+    generateCaptcha();
+    refreshCaptcha.addEventListener('click', generateCaptcha);
+
+    /* ---- Show/hide individual fields ---- */
+    const resultTypeEl = document.getElementById('resultType');
+    const individualFields = document.getElementById('individualFields');
+    resultTypeEl.addEventListener('change', () => {
+      individualFields.style.display = resultTypeEl.value === 'individual' ? 'block' : 'none';
+    });
+
+    /* ---- Fill result page from student data ---- */
+    function fillResult(student) {
+      document.getElementById('resultTitle').textContent =
+        'Result of ' + student.exam + ' Examination - ' + student.year;
+
+      document.getElementById('r-roll').textContent      = student.roll;
+      document.getElementById('r-reg').textContent       = student.reg;
+      document.getElementById('r-name').textContent      = student.name;
+      document.getElementById('r-father').textContent    = student.father;
+      document.getElementById('r-mother').textContent    = student.mother;
+      document.getElementById('r-board').textContent     = student.board;
+      document.getElementById('r-session').textContent   = student.session;
+      document.getElementById('r-group').textContent     = student.group;
+      document.getElementById('r-type-label').textContent= 'Type: ' + student.type;
+      document.getElementById('r-gender').textContent    = 'Gender: ' + student.gender;
+      document.getElementById('r-gpa').textContent       = student.gpa;
+      document.getElementById('r-dob').textContent       = student.dob;
+      document.getElementById('r-institute').textContent = student.institute;
+
+      const tbody = document.getElementById('subjectTableBody');
+      tbody.innerHTML = '';
+      student.subjects.forEach(sub => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${sub.code}</td><td>${sub.name}</td><td></td><td>${sub.grade}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('notFoundBox').style.display  = 'none';
+      document.getElementById('resultContent').style.display = 'block';
+    }
+
+    /* ---- Form submit ---- */
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const enteredCode = document.getElementById('captchaInput').value.trim();
+      const actualCode  = captchaImage.dataset.code;
+
+      if (enteredCode !== actualCode) {
+        alert('❌ Incorrect CAPTCHA. Please try again.');
+        generateCaptcha();
+        return;
+      }
+
+      const roll = document.getElementById('inputRoll').value.trim();
+      const reg  = document.getElementById('inputReg').value.trim();
+
+      try {
+        const res  = await fetch('students.json');
+        const data = await res.json();
+
+        const student = data.find(s => s.roll === roll && s.reg === reg);
+
+        if (student) {
+          fillResult(student);
+          document.getElementById('resultContent').style.display = 'block';
+          document.getElementById('notFoundBox').style.display   = 'none';
+        } else {
+          document.getElementById('resultContent').style.display = 'none';
+          document.getElementById('notFoundBox').style.display   = 'block';
+        }
+
+        showPage('page-result');
+
+      } catch (err) {
+        alert('⚠️ invilid Roll or Regi.');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

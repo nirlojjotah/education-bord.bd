@@ -1,0 +1,82 @@
+[
+  {
+    "roll": "510335",
+    "reg": "2012345678",
+    "name": "MD. FORKAN UDDIN SHUVO",
+    "father": "MD. FARUK HOSSAIN",
+    "mother": "KAMRUIN NAHAR",
+    "board": "CHATTOGRAM",
+    "session": "2023-2024",
+    "group": "BUSINESS STUDIES",
+    "type": "REGULAR",
+    "gender": "Male",
+    "gpa": "4.89",
+    "dob": "N/A",
+    "institute": "CHITTAGONG MODEL SCHOOL AND COLLEGE",
+    "exam": "HSC/Alim/Equivalent",
+    "year": "2025",
+    "subjects": [
+      { "code": "101", "name": "BANGLA", "grade": "A+" },
+      { "code": "107", "name": "ENGLISH", "grade": "A+" },
+      { "code": "253", "name": "ACCOUNTING", "grade": "A+" },
+      { "code": "277", "name": "BUSINESS ORGANIZATION & MANAGEMENT", "grade": "A+" },
+      { "code": "292", "name": "FINANCE, BANKING & INSURANCE", "grade": "A+" },
+      { "code": "275", "name": "ICT", "grade": "A+" },
+      { "code": "109", "name": "ECONOMICS", "grade": "A" }
+    ]
+  },
+  {
+    "roll": "510335",
+    "reg": "2012615649",
+    "name": "FATEMA AKTER",
+    "father": "MD. KARIM UDDIN",
+    "mother": "RAHELA BEGUM",
+    "board": "DHAKA",
+    "session": "2022-2023",
+    "group": "SCIENCE",
+    "type": "REGULAR",
+    "gender": "Female",
+    "gpa": "5.00",
+    "dob": "N/A",
+    "institute": "VIQARUNNISA NOON SCHOOL AND COLLEGE",
+    "exam": "HSC/Alim/Equivalent",
+    "year": "2025",
+    "subjects": [
+      { "code": "101", "name": "BANGLA", "grade": "A+" },
+      { "code": "107", "name": "ENGLISH", "grade": "A+" },
+      { "code": "174", "name": "PHYSICS", "grade": "A+" },
+      { "code": "176", "name": "CHEMISTRY", "grade": "A+" },
+      { "code": "178", "name": "BIOLOGY", "grade": "A+" },
+      { "code": "275", "name": "ICT", "grade": "A+" }
+    ]
+  },
+  
+  
+  {
+    "roll": "201712",
+    "reg": "2012615648",
+    "name": "Md.Tuhin",
+    "father": "MD.Asraf Ali",
+    "mother": "RAHELA BEGUM",
+    "board": "Rajshahi",
+    "session": "2022-2023",
+    "group": "Humanities",
+    "type": "REGULAR",
+    "gender": "Male",
+    "gpa": "4.23",
+    "dob": "N/A",
+    "institute": "Kasiadangga COLLEGE",
+    "exam": "HSC/Alim/Equivalent",
+    "year": "2024",
+    "subjects": [
+      { "code": "101", "name": "BANGLA", "grade": "A+" },
+      { "code": "107", "name": "ENGLISH", "grade": "A+" },
+      { "code": "174", "name": "PHYSICS", "grade": "A+" },
+      { "code": "176", "name": "CHEMISTRY", "grade": "A+" },
+      { "code": "178", "name": "BIOLOGY", "grade": "A+" },
+      { "code": "275", "name": "ICT", "grade": "A+" }
+    ]
+  }
+  
+  
+]
